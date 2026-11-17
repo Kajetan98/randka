@@ -1,0 +1,11 @@
+# GitHub Pages publikuje tylko index.html z przekierowaniem na stronę na Vercelu.
+# Odpowiedzi i kod serwera nie mogą trafić pod adres github.io.
+exclude:
+  - odpowiedzi.csv
+  - api
+  - scripts
+  - public
+  - package.json
+  - package-lock.json
+  - vercel.json
+  - README.md

@@ -17,6 +17,8 @@ Repozytorium powinno być prywatne, bo `odpowiedzi.csv` zawiera odpowiedzi. W pr
 
 Vercel serwuje tylko folder `public/` i funkcje z `api/`, więc `odpowiedzi.csv` nie jest dostępny pod adresem strony.
 
+Jeśli w repozytorium włączone jest GitHub Pages, `_config.yml` wyklucza z publikacji `odpowiedzi.csv` i kod serwera, a główny `index.html` przekierowuje na stronę na Vercelu. Strona na github.io nie mogłaby zapisywać odpowiedzi. Najprościej wyłączyć Pages: Settings → Pages → Unpublish site.
+
 ## Wdrażanie
 
 Projekt `randka` na Vercelu jest wdrażany z plików, bez połączenia z GitHubem, bo konto Vercel nie ma podpiętego GitHuba. Zmiany w repozytorium nie wdrażają się więc same. Żeby to włączyć: Vercel → Account Settings → Authentication → połącz GitHub, potem w projekcie Settings → Git → Connect Git Repository → `Kajetan98/randka`. `vercel.json` pomija budowanie, gdy commit zmienia tylko `odpowiedzi.csv`.
