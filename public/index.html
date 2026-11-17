@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Chcesz iść ze mną na randkę?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;700&display=swap">
+<style>
+/* Layout: one taped sheet of squared school-notebook paper ("zeszyt w kratkę"); the note's steps replace each other on it. */
+:root {
+  --desk: #e4e9f1;
+  --paper: #fbfcff;
+  --grid: #d3dff1;
+  --ink: #1c3a8e;
+  --ink-soft: #56689a;
+  --margin: #e05462;
+  --heart: #dd3756;
+  --tape: rgba(236, 219, 140, 0.72);
+  --shadow: rgba(28, 58, 142, 0.22);
+  --font-hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+  --font-ui: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --cell: 22px;
+  --pad-l: 78px;
+  --margin-x: 56px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --desk: #0d1220;
+    --paper: #161e30;
+    --grid: #233049;
+    --ink: #c4d3ff;
+    --ink-soft: #8f9fc9;
+    --margin: #e06d79;
+    --heart: #ff7088;
+    --tape: rgba(222, 205, 130, 0.30);
+    --shadow: rgba(0, 0, 0, 0.55);
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--desk);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: calc(44px + env(safe-area-inset-top, 0px)) calc(64px + env(safe-area-inset-bottom, 0px));
+}
+.wrap { max-width: 600px; margin: 0 auto; }
+
+/* The sheet: straight content on a slightly rotated paper layer */
+.sheet { position: relative; isolation: isolate; padding: 64px 32px 48px var(--pad-l); min-height: 460px; }
+.paper {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: var(--cell) var(--cell);
+  border-radius: 3px;
+  box-shadow: 0 1px 2px var(--shadow), 0 24px 46px -24px var(--shadow);
+  transform: rotate(-0.8deg);
+}
+.margin-line { position: absolute; top: 0; bottom: 0; left: calc(var(--margin-x) - 1px); width: 2px; background: var(--margin); opacity: 0.85; }
+.tape { position: absolute; top: -13px; left: 50%; width: 132px; height: 30px; margin-left: -66px; background: var(--tape); transform: rotate(2.5deg); }
+.to { position: absolute; top: 16px; left: var(--pad-l); margin: 0; font-family: var(--font-hand); font-size: 1.5rem; font-weight: 500; color: var(--ink-soft); }
+.burst-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+
+[data-step] { display: flex; flex-direction: column; }
+.step-in { animation: rise 0.45s ease-out both; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+h1, h2, h3 { margin: 0; font-family: var(--font-hand); font-weight: 700; color: var(--ink); line-height: 1.05; text-wrap: balance; }
+h1 { font-size: clamp(2.5rem, 8vw, 3.5rem); }
+.yay { font-size: clamp(2.2rem, 7vw, 3rem); display: flex; align-items: center; gap: 12px; }
+.yay > span { min-width: 0; }
+h3, .ask { font-size: clamp(1.9rem, 5.5vw, 2.4rem); }
+[tabindex="-1"]:focus { outline: none; }
+
+/* Tak / Nie squares */
+.choices { display: flex; align-items: center; gap: 40px; margin-top: 44px; min-height: 150px; flex-wrap: wrap; }
+.box {
+  appearance: none;
+  width: 124px;
+  height: 124px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  padding: 0;
+  border: 3px solid var(--ink);
+  border-radius: 7px 12px 6px 14px / 12px 6px 14px 7px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-hand);
+  font-size: 2.7rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#yes { transform: scale(var(--grow, 1)); transition: transform 0.25s ease, background-color 0.15s; }
+#yes:hover { background-color: color-mix(in srgb, var(--heart) 10%, transparent); }
+.tickmark { position: absolute; right: -32px; top: -36px; width: 74px; height: 74px; pointer-events: none; overflow: visible; }
+.tickmark path { fill: none; stroke: var(--heart); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.35s ease; }
+#yes:hover .tickmark path, #yes:focus-visible .tickmark path { stroke-dashoffset: 0; }
+.no-slot { width: 124px; height: 124px; }
+#no { touch-action: none; }
+.box.fleeing { position: fixed; z-index: 50; margin: 0; background: var(--paper); box-shadow: 0 12px 26px -12px var(--shadow); transition: left 0.2s ease, top 0.2s ease; }
+.taunt { min-height: 2.2rem; margin: 22px 0 0; font-family: var(--font-hand); font-size: 1.6rem; color: var(--ink-soft); }
+
+/* Heart scribble */
+.heart { width: 58px; height: 58px; flex: none; overflow: visible; }
+.heart path { fill: none; stroke: var(--heart); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.step-in .heart path { animation: draw 1s ease-out 0.2s both; }
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.step-in .yay { animation: pop 0.55s cubic-bezier(0.2, 1.6, 0.4, 1) both; transform-origin: left center; }
+@keyframes pop { from { opacity: 0; transform: scale(0.7) rotate(-3deg); } to { opacity: 1; transform: none; } }
+
+/* Place options */
+.later { display: flex; flex-direction: column; gap: 18px; margin-top: 34px; }
+.options { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.opt {
+  appearance: none;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 14px;
+  padding: 12px 14px;
+  text-align: left;
+  border: 2px solid var(--ink);
+  border-radius: 5px 10px 6px 9px / 9px 6px 10px 5px;
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.opt:hover { transform: translateY(-2px); background: var(--paper); }
+.opt .sq { grid-row: span 2; width: 28px; height: 28px; border: 2px solid var(--ink); border-radius: 3px 5px 3px 6px; position: relative; }
+.opt[aria-pressed="true"] .sq::after { content: ""; position: absolute; inset: 3px; background: var(--heart); border-radius: 2px; }
+.opt .name { font-family: var(--font-hand); font-size: 1.9rem; font-weight: 700; line-height: 1; }
+.opt .hint { font-size: 0.88rem; color: var(--ink-soft); }
+
+/* Time */
+.picked { margin: 0 0 6px; font-family: var(--font-hand); font-size: 1.7rem; color: var(--ink-soft); }
+.time-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px 22px; margin-top: 28px; }
+.time-field { display: flex; flex-direction: column; gap: 4px; }
+.label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+#time {
+  font-family: var(--font-hand);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 3px dashed var(--ink);
+  border-radius: 0;
+  padding: 0 4px;
+  width: 9ch;
+  min-width: 7.5ch;
+  max-width: 100%;
+}
+.btn {
+  appearance: none;
+  font: 700 1rem var(--font-ui);
+  padding: 12px 22px;
+  border: 2px solid var(--ink);
+  border-radius: 6px 11px 7px 10px / 10px 7px 11px 6px;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+}
+.linklike { appearance: none; align-self: flex-start; margin-top: 22px; padding: 0; border: 0; background: none; font: 600 0.95rem var(--font-ui); color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.error { min-height: 1.4em; margin: 10px 0 0; color: var(--heart); font-weight: 600; font-size: 0.95rem; }
+
+/* Done */
+.summary { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 18px; margin: 30px 0 0; align-items: baseline; }
+.summary dt { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+.summary dd { margin: 0; font-family: var(--font-hand); font-size: 2.2rem; font-weight: 700; line-height: 1.1; overflow-wrap: anywhere; }
+.burst { position: absolute; width: 22px; height: 22px; animation: fly 1.4s ease-out forwards; }
+.burst path { fill: var(--heart); }
+@keyframes fly {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.4) rotate(0deg); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1) rotate(var(--r)); }
+}
+
+:focus-visible { outline: 3px dashed var(--heart); outline-offset: 4px; }
+
+@media (max-width: 480px) {
+  :root { --pad-l: 58px; --margin-x: 40px; }
+  .sheet { padding: 60px 20px 40px var(--pad-l); }
+  .box, .no-slot { width: 106px; height: 106px; }
+  .box { font-size: 2.4rem; }
+  .choices { gap: 30px; }
+  .heart { width: 46px; height: 46px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; transition-duration: 1ms !important; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <article class="sheet" id="sheet">
+    <div class="paper" aria-hidden="true"><span class="margin-line"></span></div>
+    <span class="tape" aria-hidden="true"></span>
+    <p class="to">Do: Ciebie</p>
+    <div class="burst-layer" id="burstLayer" aria-hidden="true"></div>
+
+    <section data-step="pytanie">
+      <h1 tabindex="-1">Chcesz iść ze mną na randkę?</h1>
+      <div class="choices">
+        <button class="box" id="yes" type="button">Tak<svg class="tickmark" viewBox="0 0 70 70" aria-hidden="true"><path pathLength="1" d="M10 36 L28 54 L62 8"/></svg></button>
+        <div class="no-slot" id="noSlot"><button class="box" id="no" type="button">Nie</button></div>
+      </div>
+      <p class="taunt" id="taunt" aria-live="polite"></p>
+    </section>
+
+    <section data-step="miejsce" hidden>
+      <h2 class="yay" tabindex="-1"><span>Super, że chcesz się spotkać!</span><svg class="heart" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M50 84 C 28 68, 8 52, 12 32 C 15 17, 33 11, 44 22 C 47 25, 49 28, 50 31 C 51 28, 53 25, 56 22 C 67 11, 85 17, 88 32 C 92 52, 72 68, 52 83 L 45 79"/></svg></h2>
+      <div class="later" id="placeQ">
+        <h3>Gdzie chciałabyś wyjść?</h3>
+        <div class="options" role="group" aria-label="Miejsce randki">
+          <button class="opt" type="button" data-place="kino" aria-pressed="false"><span class="sq" aria-hidden="true"></span><span class="name">Kino</span><span class="hint">film i popcorn</span></button>
+          <button class="opt" type="button" data-place="kolacja" aria-pressed="false"><span class="sq" aria-hidden="true"></span><span class="name">Kolacja</span><span class="hint">coś dobrego we dwoje</span></button>
+          <button class="opt" type="button" data-place="kawa" aria-pressed="false"><span class="sq" aria-hidden="true"></span><span class="name">Kawa i deser</span><span class="hint">kawiarnia na mieście</span></button>
+          <button class="opt" type="button" data-place="spacer" aria-pressed="false"><span class="sq" aria-hidden="true"></span><span class="name">Spacer</span><span class="hint">park albo bulwary</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section data-step="godzina" hidden>
+      <p class="picked"><span id="pickedLabel">Kino</span>, dobry wybór.</p>
+      <h2 class="ask" tabindex="-1">O której chcesz się spotkać?</h2>
+      <form class="time-form" id="timeForm" novalidate>
+        <div class="time-field">
+          <label class="label" for="time">Godzina</label>
+          <input id="time" name="time" type="time" autocomplete="off">
+        </div>
+        <button class="btn" id="go" type="submit">Gotowe</button>
+      </form>
+      <p class="error" id="timeError" aria-live="polite"></p>
+      <button class="linklike" id="back" type="button">zmień miejsce</button>
+    </section>
+
+    <section data-step="koniec" hidden>
+      <h2 class="yay" tabindex="-1"><span>Super, że idziemy na randkę!</span><svg class="heart" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M50 84 C 28 68, 8 52, 12 32 C 15 17, 33 11, 44 22 C 47 25, 49 28, 50 31 C 51 28, 53 25, 56 22 C 67 11, 85 17, 88 32 C 92 52, 72 68, 52 83 L 45 79"/></svg></h2>
+      <dl class="summary">
+        <dt>Gdzie</dt><dd id="doneWhere"></dd>
+        <dt>O której</dt><dd id="doneWhen"></dd>
+      </dl>
+    </section>
+  </article>
+</main>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const API = "/api/odpowiedz";
+  const PLACES = { kino: "Kino", kolacja: "Kolacja", kawa: "Kawa i deser", spacer: "Spacer" };
+  const TAUNTS = [[1, "Ups, uciekł."], [3, "Ten przycisk jest bardzo nieśmiały."], [6, "Chyba nie chce, żeby go kliknąć."], [10, "Może jednak ten drugi kwadrat?"], [15, "Nie da się. Serio."]];
+  const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const visitId = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+  const state = { answer: null, noAttempts: 0, place: null, time: null, step: "pytanie" };
+  const yes = $("#yes"), no = $("#no"), slot = $("#noSlot"), taunt = $("#taunt");
+  const placeQ = $("#placeQ"), timeInput = $("#time"), timeError = $("#timeError");
+  let fleeing = false, lastFlee = 0, lastPointer = null, revealTimer = 0;
+
+  /* ---------- sending answers to the server (CSV in the GitHub repo) ---------- */
+  let queue = Promise.resolve();
+  let leftSent = false;
+
+  function payload(etap) {
+    return {
+      wizyta: visitId,
+      etap,
+      odpowiedz: state.answer || "",
+      miejsce: state.place || "",
+      godzina: state.time || "",
+      proby_nie: state.noAttempts
+    };
+  }
+
+  function send(etap) {
+    const body = JSON.stringify(payload(etap));
+    queue = queue.then(() =>
+      fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true })
+        .catch(() => {})
+    );
+    return queue;
+  }
+
+  setTimeout(() => { if (document.visibilityState === "visible") send("otwarcie"); }, 1200);
+
+  function sendLeave() {
+    if (leftSent || state.answer || state.noAttempts === 0) return;
+    leftSent = true;
+    const blob = new Blob([JSON.stringify(payload("zamknieto_bez_tak"))], { type: "application/json" });
+    if (!(navigator.sendBeacon && navigator.sendBeacon(API, blob))) {
+      fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload("zamknieto_bez_tak")), keepalive: true }).catch(() => {});
+    }
+  }
+  window.addEventListener("pagehide", sendLeave);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") sendLeave(); });
+
+  function show(step) {
+    state.step = step;
+    document.querySelectorAll("[data-step]").forEach((s) => {
+      const on = s.dataset.step === step;
+      s.hidden = !on;
+      if (on && step !== "pytanie") s.classList.add("step-in");
+    });
+    no.hidden = step !== "pytanie";
+    const h = document.querySelector('[data-step="' + step + '"] [tabindex="-1"]');
+    if (h && step !== "pytanie") h.focus({ preventScroll: true });
+  }
+
+  /* ---------- the "Nie" square that runs away ---------- */
+  function pointFrom(e) {
+    if (e && e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    if (e && typeof e.clientX === "number" && (e.clientX || e.clientY)) return { x: e.clientX, y: e.clientY };
+    if (lastPointer) return lastPointer;
+    const r = no.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }
+
+  function moveNo(p) {
+    const w = no.offsetWidth, h = no.offsetHeight, m = 16;
+    const vw = document.documentElement.clientWidth, vh = window.innerHeight;
+    if (!fleeing) {
+      const r = no.getBoundingClientRect();
+      no.style.left = r.left + "px";
+      no.style.top = r.top + "px";
+      no.classList.add("fleeing");
+      document.body.appendChild(no);
+      fleeing = true;
+      void no.offsetWidth;
+    }
+    const yr = yes.getBoundingClientRect();
+    const far = Math.min(vw, vh) * 0.4;
+    let best = null, bestD = -1;
+    for (let i = 0; i < 30; i++) {
+      const x = m + Math.random() * Math.max(0, vw - w - 2 * m);
+      const y = m + Math.random() * Math.max(0, vh - h - 2 * m);
+      const hitsYes = x < yr.right + 20 && x + w > yr.left - 20 && y < yr.bottom + 20 && y + h > yr.top - 20;
+      if (hitsYes) continue;
+      const d = Math.hypot(x + w / 2 - p.x, y + h / 2 - p.y);
+      if (d > bestD) { bestD = d; best = { x, y }; }
+      if (d > far) break;
+    }
+    if (!best) best = { x: m, y: m };
+    no.style.left = Math.round(best.x) + "px";
+    no.style.top = Math.round(best.y) + "px";
+  }
+
+  function flee(e, cancel) {
+    if (cancel && e && e.cancelable) e.preventDefault();
+    if (state.step !== "pytanie") return;
+    const now = performance.now();
+    if (now - lastFlee < 140) return;
+    lastFlee = now;
+    moveNo(pointFrom(e));
+    state.noAttempts += 1;
+    renderTaunt();
+  }
+
+  function renderTaunt() {
+    let t = "";
+    for (const [n, s] of TAUNTS) if (state.noAttempts >= n) t = s;
+    taunt.textContent = t;
+    yes.style.setProperty("--grow", String(1 + Math.min(state.noAttempts, 10) * 0.035));
+  }
+
+  no.addEventListener("pointerenter", (e) => flee(e, false));
+  no.addEventListener("pointerdown", (e) => flee(e, true));
+  no.addEventListener("touchstart", (e) => flee(e, true), { passive: false });
+  no.addEventListener("click", (e) => flee(e, true));
+  no.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") flee(e, true); });
+  no.addEventListener("focus", () => flee(null, false));
+
+  document.addEventListener("pointermove", (e) => {
+    lastPointer = { x: e.clientX, y: e.clientY };
+    if (e.pointerType !== "mouse" || state.step !== "pytanie") return;
+    const r = no.getBoundingClientRect(), pad = 24;
+    if (e.clientX > r.left - pad && e.clientX < r.right + pad && e.clientY > r.top - pad && e.clientY < r.bottom + pad) flee(e, false);
+  }, { passive: true });
+
+  window.addEventListener("resize", () => {
+    if (!fleeing) return;
+    const w = no.offsetWidth, h = no.offsetHeight;
+    const vw = document.documentElement.clientWidth, vh = window.innerHeight;
+    no.style.left = Math.max(16, Math.min(parseFloat(no.style.left) || 16, vw - w - 16)) + "px";
+    no.style.top = Math.max(16, Math.min(parseFloat(no.style.top) || 16, vh - h - 16)) + "px";
+  });
+
+  /* ---------- steps ---------- */
+  yes.addEventListener("click", () => {
+    if (state.answer) return;
+    state.answer = "tak";
+    show("miejsce");
+    clearTimeout(revealTimer);
+    if (reduceMotion()) {
+      placeQ.hidden = false;
+    } else {
+      placeQ.hidden = true;
+      revealTimer = setTimeout(() => { placeQ.hidden = false; placeQ.classList.add("step-in"); }, 1300);
+    }
+    send("kliknieto_tak");
+  });
+
+  document.querySelectorAll(".opt").forEach((b) => b.addEventListener("click", () => {
+    state.place = b.dataset.place;
+    document.querySelectorAll(".opt").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+    $("#pickedLabel").textContent = PLACES[state.place];
+    send("wybrano_miejsce");
+    setTimeout(() => show("godzina"), reduceMotion() ? 0 : 380);
+  }));
+
+  timeInput.addEventListener("input", () => { if (timeInput.value) timeError.textContent = ""; });
+
+  $("#timeForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v = timeInput.value.trim();
+    if (!v) {
+      timeError.textContent = "Wpisz godzinę, np. 19:00.";
+      timeInput.focus();
+      return;
+    }
+    state.time = v.slice(0, 20);
+    $("#doneWhere").textContent = PLACES[state.place] || "";
+    $("#doneWhen").textContent = state.time;
+    show("koniec");
+    burst();
+    send("wpisano_godzine");
+  });
+
+  $("#back").addEventListener("click", () => {
+    clearTimeout(revealTimer);
+    placeQ.hidden = false;
+    show("miejsce");
+  });
+
+  function burst() {
+    if (reduceMotion()) return;
+    const layer = $("#burstLayer");
+    const heart = document.querySelector('[data-step="koniec"] .heart');
+    const lr = layer.getBoundingClientRect(), hr = heart.getBoundingClientRect();
+    const ox = hr.left - lr.left + hr.width / 2 - 11, oy = hr.top - lr.top + hr.height / 2 - 11;
+    for (let i = 0; i < 14; i++) {
+      const s = document.createElement("span");
+      s.className = "burst";
+      s.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.2 5.3 3.2 1.7-2 3.1-3.2 5.3-3.2 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>';
+      const a = Math.random() * Math.PI * 2, dist = 70 + Math.random() * 110;
+      s.style.left = ox + "px";
+      s.style.top = oy + "px";
+      s.style.setProperty("--dx", Math.round(Math.cos(a) * dist) + "px");
+      s.style.setProperty("--dy", Math.round(Math.sin(a) * dist - 40) + "px");
+      s.style.setProperty("--r", Math.round(Math.random() * 120 - 60) + "deg");
+      s.style.animationDelay = Math.round(Math.random() * 180) + "ms";
+      s.addEventListener("animationend", () => s.remove());
+      layer.appendChild(s);
+    }
+  }
+})();
+</script>
+</body>
+</html>
