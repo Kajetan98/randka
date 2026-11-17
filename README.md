@@ -2,6 +2,8 @@
 
 Strona z pytaniem "Chcesz iść ze mną na randkę?". Przycisk "Nie" ucieka, po "Tak" osoba wybiera miejsce i wpisuje godzinę. Każdy krok dopisuje wiersz do pliku `odpowiedzi.csv` w tym repozytorium. Osoba, która odpowiada, nie widzi tego pliku.
 
+Adres strony: https://randka-tawny.vercel.app
+
 ## Jak to działa
 
 - `public/index.html` to cała strona. Vercel serwuje tylko folder `public/`, więc `odpowiedzi.csv` nie jest dostępny pod adresem strony.
@@ -15,6 +17,8 @@ Repozytorium powinno być prywatne, bo `odpowiedzi.csv` zawiera odpowiedzi.
 1. Utwórz fine-grained token na GitHubie: Settings → Developer settings → Personal access tokens → Fine-grained tokens. Repository access: tylko to repozytorium. Permissions → Contents: Read and write.
 2. W projekcie na Vercelu: Settings → Environment Variables → dodaj `GITHUB_TOKEN` z tym tokenem (środowisko Production).
 3. Zrób ponowne wdrożenie (Deployments → Redeploy), żeby funkcja zobaczyła zmienną.
+
+Projekt na Vercelu (`randka`) został wdrożony z plików, bez połączenia z GitHubem, bo konto Vercel nie ma podpiętego GitHuba. Zmiany w repozytorium nie wdrażają się więc same. Żeby to włączyć: Vercel → Account Settings → Authentication → połącz GitHub, potem w projekcie Settings → Git → Connect Git Repository → `Kajetan98/randka`.
 
 Opcjonalne zmienne: `GITHUB_REPO` (domyślnie `Kajetan98/randka`), `GITHUB_BRANCH` (domyślnie `main`), `CSV_PATH` (domyślnie `odpowiedzi.csv`).
 
