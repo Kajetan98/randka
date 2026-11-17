@@ -1,0 +1,27 @@
+name: Odpowiedzi do CSV
+
+# Co 30 minut przenosi nowe odpowiedzi ze strony do odpowiedzi.csv.
+# Można też uruchomić ręcznie: zakładka Actions → "Odpowiedzi do CSV" → Run workflow.
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write # commit do odpowiedzi.csv
+  id-token: write # token OIDC, którym zadanie przedstawia się stronie
+
+concurrency:
+  group: odpowiedzi-csv
+  cancel-in-progress: false
+
+jobs:
+  synchronizuj:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dopisz nowe odpowiedzi
+        run: node scripts/synchronizuj.mjs
+        env:
+          SITE_URL: https://randka-tawny.vercel.app
