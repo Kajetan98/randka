@@ -9,3 +9,6 @@ czas_pl,etap,odpowiedz,miejsce,godzina_spotkania,proby_nie,wizyta,czas_utc,id
 2026-11-18 18:22:17,zamknieto_bez_tak,,,,1,mwme2g90fv3kx9,2026-11-18T17:22:17.687Z,6584520fc22caa09
 2026-11-18 18:50:28,otwarcie,,,,1,mwmf2tf2993owi,2026-11-18T17:50:28.062Z,57849305be596fab
 2026-11-18 18:50:28,kliknieto_tak,tak,,,1,mwmf2tf2993owi,2026-11-18T17:50:28.834Z,a3ec8cffea4da45e
+2026-11-19 17:01:40,otwarcie,,,,0,mwnqmqmsceeuxs,2026-11-19T16:01:40.001Z,7aab0883ce6e65e2
+2026-11-19 17:01:49,kliknieto_tak,tak,,,8,mwnqmqmsceeuxs,2026-11-19T16:01:49.110Z,6cbfd749e0ea959a
+2026-11-19 17:01:53,wybrano_miejsce,tak,Kino,,8,mwnqmqmsceeuxs,2026-11-19T16:01:53.060Z,32a59470bdbfd8f0
