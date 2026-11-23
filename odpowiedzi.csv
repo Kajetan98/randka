@@ -12,3 +12,11 @@ czas_pl,etap,odpowiedz,miejsce,godzina_spotkania,proby_nie,wizyta,czas_utc,id
 2026-11-19 17:01:40,otwarcie,,,,0,mwnqmqmsceeuxs,2026-11-19T16:01:40.001Z,7aab0883ce6e65e2
 2026-11-19 17:01:49,kliknieto_tak,tak,,,8,mwnqmqmsceeuxs,2026-11-19T16:01:49.110Z,6cbfd749e0ea959a
 2026-11-19 17:01:53,wybrano_miejsce,tak,Kino,,8,mwnqmqmsceeuxs,2026-11-19T16:01:53.060Z,32a59470bdbfd8f0
+2026-11-23 22:41:44,otwarcie,,,,0,mwtsjhxrlrw2im,2026-11-23T21:41:44.606Z,80565857c3bc32f8
+2026-11-23 22:41:47,zamknieto_bez_tak,,,,3,mwtsjhxrlrw2im,2026-11-23T21:41:47.941Z,deab388605168b7b
+2026-11-23 22:43:53,kliknieto_tak,tak,,,4,mwtsjhxrlrw2im,2026-11-23T21:43:53.352Z,d567c0cfcd31ffd8
+2026-11-23 22:45:09,otwarcie,,,,0,mwtsnw23v3p201,2026-11-23T21:45:09.246Z,3e0d6e0a37d7e23f
+2026-11-23 22:47:05,otwarcie,,,,1,mwtsqed6nyeljb,2026-11-23T21:47:05.872Z,bdd5c1fc99d0bfad
+2026-11-23 22:47:09,kliknieto_tak,tak,,,6,mwtsqed6nyeljb,2026-11-23T21:47:09.113Z,49f69cee6a052eff
+2026-11-23 22:47:11,wybrano_miejsce,tak,Kino,,6,mwtsqed6nyeljb,2026-11-23T21:47:11.743Z,cb46733301796991
+2026-11-23 22:47:23,wpisano_godzine,tak,Kino,21:37,6,mwtsqed6nyeljb,2026-11-23T21:47:23.579Z,48a8c327d071f7a2
